@@ -2,135 +2,160 @@ package com.csk.ppmtool.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ProjectTask {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@Column(updatable = false)
-	private String projectSequence;// find indivual project
-	@NotBlank(message = "Please include a project summary")
-	private String summary;
-	private String acceptanceCeriteria;
-	private String status;
-	private String priorty;
-	private Date dueDate;
-	private Date createdAt;
-	private Date updatedDate;
-	// ManyToOne with backlog
-	@Column(updatable = false)
-	private String projectIdentifier;
 
-	public ProjectTask() {
-	}
-	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(updatable = false)
+    private String projectSequence;
+    @NotBlank(message = "Please include a project summary")
+    private String summary;
+    private String acceptanceCriteria;
+    private String status;
+    private Integer priority;
+    private Date dueDate;
+    //ManyToOne with Backlog
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name="backlog_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Backlog backlog;
 
-	@Override
-	public String toString() {
-		return "ProjectTask [id=" + id + ", projectSequence=" + projectSequence + ", summary=" + summary
-				+ ", acceptanceCeriteria=" + acceptanceCeriteria + ", status=" + status + ", priorty=" + priorty
-				+ ", dueDate=" + dueDate + ", createdAt=" + createdAt + ", updatedDate=" + updatedDate
-				+ ", projectIdentifier=" + projectIdentifier + "]";
-	}
+    @Column(updatable = false)
+    private String projectIdentifer;
+    private Date updateAt;
+    private Date createAt;
 
+    public ProjectTask() {
+    }
 
-	@PrePersist
-	protected void onCreate() {
-		this.createdAt = new Date();
-	}
+    public Long getId() {
+        return id;
+    }
 
-	@PreUpdate
-	protected void onUpdate() {
-		this.updatedDate = new Date();
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public String getProjectSequence() {
+        return projectSequence;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setProjectSequence(String projectSequence) {
+        this.projectSequence = projectSequence;
+    }
 
-	public String getProjectSequence() {
-		return projectSequence;
-	}
+    public String getSummary() {
+        return summary;
+    }
 
-	public void setProjectSequence(String projectSequence) {
-		this.projectSequence = projectSequence;
-	}
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
-	public String getSummary() {
-		return summary;
-	}
+    public String getAcceptanceCriteria() {
+        return acceptanceCriteria;
+    }
 
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
+    public void setAcceptanceCriteria(String acceptanceCriteria) {
+        this.acceptanceCriteria = acceptanceCriteria;
+    }
 
-	public String getAcceptanceCeriteria() {
-		return acceptanceCeriteria;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setAcceptanceCeriteria(String acceptanceCeriteria) {
-		this.acceptanceCeriteria = acceptanceCeriteria;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public Integer getPriority() {
+        return priority;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
 
-	public String getPriorty() {
-		return priorty;
-	}
+    public Date getDueDate() {
+        return dueDate;
+    }
 
-	public void setPriorty(String priorty) {
-		this.priorty = priorty;
-	}
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
 
-	public Date getDueDate() {
-		return dueDate;
-	}
+    public String getProjectIdentifer() {
+        return projectIdentifer;
+    }
 
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
+    public void setProjectIdentifer(String projectIdentifer) {
+        this.projectIdentifer = projectIdentifer;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreate_At() {
+        return createAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreate_At(Date createAt) {
+        this.createAt = createAt;
+    }
 
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
+    public Date getUpdate_At() {
+        return updateAt;
+    }
 
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
+    public void setUpdate_At(Date updateAt) {
+        this.updateAt = updateAt;
+    }
 
-	public String getProjectIdentifier() {
-		return projectIdentifier;
-	}
+    public Backlog getBacklog() {
+        return backlog;
+    }
 
-	public void setProjectIdentifier(String projectIdentifier) {
-		this.projectIdentifier = projectIdentifier;
-	}
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
+    }
 
+    @PrePersist
+    protected void onCreate(){
+        this.createAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.updateAt = new Date();
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectTask{" +
+                "id=" + id +
+                ", projectSequence='" + projectSequence + '\'' +
+                ", summary='" + summary + '\'' +
+                ", acceptanceCriteria='" + acceptanceCriteria + '\'' +
+                ", status='" + status + '\'' +
+                ", priority=" + priority +
+                ", dueDate=" + dueDate +
+                ", projectIdentifer='" + projectIdentifer + '\'' +
+                ", createAt=" + createAt +
+                ", updateAt=" + updateAt +
+                '}';
+    }
 }

@@ -32,7 +32,7 @@ public class Backlog {
 	@JsonIgnore
 	private Project project;
 	
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER,mappedBy="backlog")
+	@OneToMany(cascade=CascadeType.REFRESH,fetch=FetchType.EAGER,mappedBy="backlog",orphanRemoval = true)
 	private List<ProjectTask> projectTasks=new ArrayList<>();
 
 	public List<ProjectTask> getProjectTasks() {

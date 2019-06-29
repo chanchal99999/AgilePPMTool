@@ -1,5 +1,7 @@
 package com.csk.ppmtool.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,32 +81,20 @@ public class ProjectTaskService {
 		return projectTask;
 	}
 	public ProjectTask updateByProjectSequence(ProjectTask updatedTask,String backlogId,String ptid) {
-		ProjectTask projectTask=projectTaskRepository.findByProjectSequence(ptid);
+		ProjectTask projectTask=findPTByProjectSequence(backlogId,ptid);
 //		ProjectTask projectTask=projectTaskRepository.findByProjectSequence(updatedTask.getProjectSequence());
 		projectTask=updatedTask;
 		return projectTaskRepository.save(projectTask);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public void deletePTByProjectSequence(String backlogId,String ptid) {
+		ProjectTask projectTask=findPTByProjectSequence(backlogId,ptid);
+		/*
+		 * Backlog backlog=projectTask.getBacklog(); List<ProjectTask>
+		 * pt=backlog.getProjectTasks(); pt.remove(projectTask);
+		 * backlogRepoitory.save(backlog);
+		 */
+		projectTaskRepository.delete(projectTask);
+	}
 	
 	
 }

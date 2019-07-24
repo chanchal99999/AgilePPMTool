@@ -1,7 +1,5 @@
 package com.csk.ppmtool.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +42,7 @@ public class ProjectTaskService {
 				projectTask.setStatus("To_Do");
 			}
 			// INITIAL priority when priority null
-			if (projectTask.getPriority() == null) {// future we need projectTask.getProject()==0 to handle the form
+			if (projectTask.getPriority()==0||projectTask.getPriority() == null) {// future we need projectTask.getProject()==0 to handle the form
 				projectTask.setPriority(3);
 			}
 			return projectTaskRepository.save(projectTask);

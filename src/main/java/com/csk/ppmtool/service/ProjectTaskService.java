@@ -39,7 +39,7 @@ public class ProjectTaskService {
 
 			// Initial status when status is null
 			if (projectTask.getStatus() == "" || projectTask.getStatus() == null) {
-				projectTask.setStatus("To_Do");
+				projectTask.setStatus("TO_DO");
 			}
 			// INITIAL priority when priority null
 			if (projectTask.getPriority()==0||projectTask.getPriority() == null) {// future we need projectTask.getProject()==0 to handle the form
@@ -56,7 +56,7 @@ public class ProjectTaskService {
 
 		Project project = projectRepository.findByProjectIdentifier(id);
 		if (project == null) {
-			throw new ProjectNotFoundException("Project with ID " + id + " does not exit!");
+			throw new ProjectNotFoundException("Project with ID \"" + id + "\" does not exit!");
 		}
 		return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
 	}
@@ -67,14 +67,14 @@ public class ProjectTaskService {
 	public ProjectTask findPTByProjectSequence(String backlogId, String ptid) {
 		Backlog backlog=backlogRepoitory.findByProjectIdentifier(backlogId);
 		if(backlog==null) {
-			throw new ProjectNotFoundException("Project with ID " + backlogId + " does not exit!");
+			throw new ProjectNotFoundException("Project with ID \"" + backlogId + "\" does not exit!");
 		}
 		ProjectTask projectTask=projectTaskRepository.findByProjectSequence(ptid);
 		if(projectTask==null) {
-			throw new ProjectNotFoundException("Project Task " + ptid + " does not found");
+			throw new ProjectNotFoundException("Project Task \"" + ptid + "\" does not found");
 		}
 		if(!projectTask.getProjectIdentifer().equals(backlogId)) {
-			throw new ProjectNotFoundException("Project Task '"+ptid+"' does not exit in project: '"+backlogId+"'");
+			throw new ProjectNotFoundException("Project Task \""+ptid+"\" does not exit in project: \""+backlogId+"\"");
 		}
 		return projectTask;
 	}

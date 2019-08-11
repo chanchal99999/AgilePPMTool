@@ -34,14 +34,14 @@ public class ProjectService {
 			return projectRepository.save(project);
 		}
 		catch(Exception e) {
-			throw new ProjectIdException("Project Id : "+project.getProjectIdentifier().toUpperCase()+"' already exits'");
+			throw new ProjectIdException("Project Id : \""+project.getProjectIdentifier().toUpperCase()+"\" already exits");
 		}
 	}
 	
 	public Project findProjectByIdentifier(String projectId) {
 		Project project=projectRepository.findByProjectIdentifier(projectId);
 		if(project==null) {
-			throw new ProjectIdException("Project Id : "+projectId+"' does not exits'");
+			throw new ProjectIdException("Project Id : \""+projectId+"\" does not exits");
 		}
 		return project;
 	}
@@ -52,7 +52,7 @@ public class ProjectService {
 	public void deleteProjectByIdentifier(String projectId) {
 		Project project=projectRepository.findByProjectIdentifier(projectId);
 		if(project==null) {
-			throw new ProjectIdException("Cannot Project with Id : "+projectId+"' This project does not exits'");
+			throw new ProjectIdException("Cannot Project with Id : \""+projectId+"\" This project does not exits");
 		}
 		projectRepository.delete(project);
 	}

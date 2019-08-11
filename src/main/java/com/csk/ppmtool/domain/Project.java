@@ -71,7 +71,7 @@ public class Project {
 		return backlog;
 	}
 
-	public void setBaacklog(Backlog backlog) {
+	public void setBacklog(Backlog backlog) {
 		this.backlog = backlog;
 	}
 

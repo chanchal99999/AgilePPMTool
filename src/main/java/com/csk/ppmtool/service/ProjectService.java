@@ -1,5 +1,7 @@
 package com.csk.ppmtool.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,21 +27,31 @@ public class ProjectService {
 	private UserRepository userRepository;
 	
 	public Project saveOrUpdateProject(Project project, String username) {
+		
+		if(project.getId()!=null) {
+			Project existingProject=projectRepository.findByProjectIdentifier(project.getProjectIdentifier());
+			if(existingProject!=null&&!existingProject.getProjectLeader().equals(username)) {
+				throw new ProjectNotFoundException("Project not found in your account");
+			}else if(existingProject==null) {
+				throw new ProjectNotFoundException("Project ID : \""+project.getProjectIdentifier()+"\" can't be updated because it doesn't exits");
+			}
+		}
+		
 		try {
-			
 			User user=userRepository.findByUsername(username);
 			project.setUser(user);
+			project.setUpdatedAt(new Date());
 			project.setProjectLeader(user.getUsername());
 			project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 			if(project.getId()==null) {
 				Backlog backlog=new Backlog();
-				project.setBaacklog(backlog);
+				project.setBacklog(backlog);
 				backlog.setProject(project);
 				backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 			}
 //			if(project.getId()!=null) {
 			else {
-				project.setBaacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
+				project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
 			}
 			return projectRepository.save(project);
 		}

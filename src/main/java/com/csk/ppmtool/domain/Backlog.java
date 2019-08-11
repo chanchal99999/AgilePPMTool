@@ -28,35 +28,21 @@ public class Backlog {
 	// OneToOne with project
 
 	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="project_d",nullable = false)
+	@JoinColumn(name="project_id",nullable = false)
 	@JsonIgnore
 	private Project project;
 	
-	@OneToMany(cascade=CascadeType.REFRESH,fetch=FetchType.EAGER,mappedBy="backlog",orphanRemoval = true)
-	private List<ProjectTask> projectTasks=new ArrayList<>();
+	//OneToMany projecttasks
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "backlog", orphanRemoval = true)
+    private List<ProjectTask> projectTasks = new ArrayList<>();
+    //Cascade REFRESH
+    //ORPHAN REMOVAL
+    
+    // OneToMany projecttasks
+ 	public Backlog() {
 
-	public List<ProjectTask> getProjectTasks() {
-		return projectTasks;
-	}
-
-	public void setProjectTasks(List<ProjectTask> projectTasks) {
-		this.projectTasks = projectTasks;
-	}
-
-	public Project getProject() {
-		return project;
-	}
-
-	public void setProject(Project project) {
-		this.project = project;
-	}
-
-	// OneToMany projecttasks
-	public Backlog() {
-
-	}
-
-	public Long getId() {
+ 	}
+ 	public Long getId() {
 		return id;
 	}
 
@@ -80,4 +66,19 @@ public class Backlog {
 		this.projectIdentifier = projectIdentifier;
 	}
 
+	public List<ProjectTask> getProjectTasks() {
+		return projectTasks;
+	}
+
+	public void setProjectTasks(List<ProjectTask> projectTasks) {
+		this.projectTasks = projectTasks;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
 }

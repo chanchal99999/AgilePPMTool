@@ -5,9 +5,12 @@ import org.springframework.stereotype.Service;
 
 import com.csk.ppmtool.domain.Backlog;
 import com.csk.ppmtool.domain.Project;
+import com.csk.ppmtool.domain.User;
 import com.csk.ppmtool.exceptions.ProjectIdException;
+import com.csk.ppmtool.exceptions.ProjectNotFoundException;
 import com.csk.ppmtool.repositories.BacklogRepoitory;
 import com.csk.ppmtool.repositories.ProjectRepository;
+import com.csk.ppmtool.repositories.UserRepository;
 
 @Service
 public class ProjectService {
@@ -18,8 +21,15 @@ public class ProjectService {
 	@Autowired
 	private BacklogRepoitory backlogRepository;
 	
-	public Project saveOrUpdateProject(Project project) {
+	@Autowired
+	private UserRepository userRepository;
+	
+	public Project saveOrUpdateProject(Project project, String username) {
 		try {
+			
+			User user=userRepository.findByUsername(username);
+			project.setUser(user);
+			project.setProjectLeader(user.getUsername());
 			project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 			if(project.getId()==null) {
 				Backlog backlog=new Backlog();
@@ -38,23 +48,28 @@ public class ProjectService {
 		}
 	}
 	
-	public Project findProjectByIdentifier(String projectId) {
+	public Project findProjectByIdentifier(String projectId, String username) {
 		Project project=projectRepository.findByProjectIdentifier(projectId);
 		if(project==null) {
 			throw new ProjectIdException("Project Id : \""+projectId+"\" does not exits");
 		}
+		if(!project.getProjectLeader().equals(username)) {
+			throw new ProjectNotFoundException("Project not found in your account");
+		}
+		
 		return project;
 	}
-	public Iterable<Project> findAllProject(){
-		return projectRepository.findAll();
+	public Iterable<Project> findAllProject(String username){
+		return projectRepository.findAllByProjectLeader(username);
 	}
 	
-	public void deleteProjectByIdentifier(String projectId) {
-		Project project=projectRepository.findByProjectIdentifier(projectId);
-		if(project==null) {
-			throw new ProjectIdException("Cannot Project with Id : \""+projectId+"\" This project does not exits");
-		}
-		projectRepository.delete(project);
+	public void deleteProjectByIdentifier(String projectId, String username) {
+		/*
+		 * Project project=projectRepository.findByProjectIdentifier(projectId);
+		 * if(project==null) { throw new
+		 * ProjectIdException("Cannot Project with Id : \""
+		 * +projectId+"\" This project does not exits"); }
+		 */		projectRepository.delete(findProjectByIdentifier(projectId,username));
 	}
 	
 }

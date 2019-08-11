@@ -18,9 +18,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
-
-import static com.csk.ppmtool.security.SecurityConstants.SECRECT;;
+import io.jsonwebtoken.UnsupportedJwtException;;
 
 @Component
 public class JwtTokenProvider {

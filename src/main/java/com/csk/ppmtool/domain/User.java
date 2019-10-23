@@ -22,10 +22,12 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User implements UserDetails{
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +43,9 @@ public class User implements UserDetails{
 	private String password;
 	@Transient
 	private String confirmPassword;
+	@JsonFormat(pattern = "yyy-mm-dd")
 	private Date created_At;
+	@JsonFormat(pattern = "yyy-mm-dd")
 	private Date updated_At;
 	
 	//OneToMany with project

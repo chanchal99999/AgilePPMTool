@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import static com.csk.ppmtool.security.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin
 public class UserController {
 
 	@Autowired
@@ -62,7 +64,7 @@ public class UserController {
 
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@Valid @RequestBody User user, BindingResult result) {
-		// Valide password match
+		// Valid password match
 		userValidator.validate(user, result);
 		ResponseEntity<?> errorMap = mapValidationErrorsService.MapValidationErrorsService(result);
 		if (errorMap != null)
